@@ -33,17 +33,19 @@ public class RJCustomVisitor extends RJBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitInstruction(JuniorParser.TerminalNodeContext ctx) {
+    public Object visitInstruction(RJParser.InstructionContext ctx) {
         int result = visit(ctx.factor(0)); // Factor 0
         for (int i = 1; i < ctx.factor().size(); i++) {
             String operator = ctx.getChild(i*2-1).getText();
             if (operator.equals("+")) {
+                result += visit(ctx.factor(i));
+            }
         }
 
         return result;
     }
 
-    @Override public Object visitFactor(JuniorParser.FactorContext ctx) {
+    @Override public Object visitFactor(RJParser.FactorContext ctx) {
         if (ctx.ENT() != null) {
             System.out.println("Se encontró un entero: " + ctx.ENT().getText());
             return Integer.parseInt(ctx.ENT().getText());
