@@ -11,7 +11,11 @@ public class RJCustomVisitor extends RJBaseVisitor<Object> {
 
     @Override public Object visitPrograma(ProgramaContext ctx) {
         Object result = null;
-        for (InstruccionContext instruccion : ctx.instruccion()) result = visit(instruccion);
+        int n = 1;
+        for (InstruccionContext instruccion : ctx.instruccion()) {
+            result = visit(instruccion);
+            System.out.println(n++ + ") " + instruccion.getText() + " => " + result);
+        }
         return result;
     }
 
@@ -46,7 +50,8 @@ public class RJCustomVisitor extends RJBaseVisitor<Object> {
     }
 
     @Override public Object visitImpresion(ImpresionContext ctx) {
-        Object value = visit(ctx.expresion()); System.out.println(value); return value;
+        // El resultado se imprime en visitPrograma para no duplicar salida.
+        return visit(ctx.expresion());
     }
 
     @Override public Object visitExpresion(ExpresionContext ctx) { return visit(ctx.expresion_relacional()); }
